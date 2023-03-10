@@ -1,15 +1,22 @@
 import 'package:carrotmarket/constants/gaps.dart';
 import 'package:carrotmarket/constants/sizes.dart';
+import 'package:carrotmarket/features/authentication/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
-class SignupScreen extends StatelessWidget {
+class SignupScreen extends ConsumerWidget {
   static const String routeName = "signUp";
   static const String routeURL = "/";
 
   const SignupScreen({super.key});
 
+  void _onLoginTap(BuildContext context) {
+    context.pushNamed(LoginScreen.routeName);
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
@@ -23,26 +30,29 @@ class SignupScreen extends StatelessWidget {
                 width: Sizes.size96 + Sizes.size56,
               ),
             ),
-            const Text(
+            Text(
               "당신 근처의 당근마켓",
               style: TextStyle(
                 fontSize: Sizes.size16 + Sizes.size4,
                 fontWeight: FontWeight.w600,
+                color: Colors.grey.shade700,
               ),
             ),
-            Gaps.v10,
-            const Text(
+            Gaps.v5,
+            Text(
               "중고 거래부터 동네 정보까지,",
               style: TextStyle(
                 fontSize: Sizes.size16,
                 fontWeight: FontWeight.w500,
+                color: Colors.grey.shade700,
               ),
             ),
-            const Text(
+            Text(
               "지금 내 동네를 선택하고 시작해보세요!",
               style: TextStyle(
                 fontSize: Sizes.size16,
                 fontWeight: FontWeight.w500,
+                color: Colors.grey.shade700,
               ),
             ),
           ],
@@ -50,7 +60,7 @@ class SignupScreen extends StatelessWidget {
       ),
       bottomNavigationBar: Container(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height / 10,
+        height: MediaQuery.of(context).size.height / 7,
         padding: const EdgeInsets.symmetric(
           vertical: Sizes.size14,
           horizontal: Sizes.size20,
@@ -74,10 +84,35 @@ class SignupScreen extends StatelessWidget {
                   style: TextStyle(
                     fontSize: Sizes.size16,
                     fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
                 ),
               ),
-            )
+            ),
+            Gaps.v20,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "이미 계정이 있나요?",
+                  style: TextStyle(
+                    color: Colors.grey.shade700,
+                  ),
+                ),
+                Gaps.h10,
+                GestureDetector(
+                  onTap: () => _onLoginTap(context),
+                  child: Text(
+                    "로그인",
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
