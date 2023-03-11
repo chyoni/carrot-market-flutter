@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:carrotmarket/config/view_models/config_view_model.dart';
 import 'package:carrotmarket/constants/gaps.dart';
 import 'package:carrotmarket/constants/sizes.dart';
 import 'package:carrotmarket/features/authentication/login_screen.dart';
+import 'package:carrotmarket/features/authentication/set_geolocation_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -15,6 +17,10 @@ class SignupScreen extends ConsumerWidget {
 
   void _onLoginTap(BuildContext context) {
     context.pushNamed(LoginScreen.routeName);
+  }
+
+  void _onStartBtnTap(BuildContext context) {
+    context.pushNamed(SetGeolocationScreen.routeName);
   }
 
   @override
@@ -67,26 +73,31 @@ class SignupScreen extends ConsumerWidget {
           vertical: Sizes.size14,
           horizontal: Sizes.size20,
         ),
-        color: Colors.grey.shade50,
+        color: ref.watch(configProvider).darkMode
+            ? Colors.black
+            : Colors.grey.shade50,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: Sizes.size20,
-                vertical: Sizes.size10,
-              ),
-              decoration: BoxDecoration(
-                color: Colors.orange.shade700,
-                borderRadius: BorderRadius.circular(Sizes.size5),
-              ),
-              child: const Center(
-                child: Text(
-                  "시작하기",
-                  style: TextStyle(
-                    fontSize: Sizes.size16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+            GestureDetector(
+              onTap: () => _onStartBtnTap(context),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: Sizes.size20,
+                  vertical: Sizes.size10,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.orange.shade700,
+                  borderRadius: BorderRadius.circular(Sizes.size5),
+                ),
+                child: const Center(
+                  child: Text(
+                    "시작하기",
+                    style: TextStyle(
+                      fontSize: Sizes.size16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),

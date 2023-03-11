@@ -15,6 +15,18 @@ class LoginScreen extends ConsumerStatefulWidget {
 }
 
 class LoginScreenState extends ConsumerState<LoginScreen> {
+  bool isDisabled = true;
+  final TextEditingController _controller = TextEditingController();
+
+  void _onChangedPhoneField(String value) {
+    if (value.length > 7) {
+      isDisabled = false;
+    } else {
+      isDisabled = true;
+    }
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,14 +66,16 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                   ],
                 ),
               ),
-              Gaps.v8,
+              Gaps.v12,
               TextField(
+                controller: _controller,
+                onChanged: (value) => _onChangedPhoneField(value),
                 style: const TextStyle(
                   fontSize: Sizes.size14,
                   height: Sizes.size2,
                 ),
                 autocorrect: false,
-                //autofocus: true,
+                autofocus: true,
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
                   hintText: "휴대폰 번호(- 없이 숫자만 입력)",
@@ -83,6 +97,61 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                     horizontal: Sizes.size12,
                   ),
                 ),
+              ),
+              Gaps.v12,
+              FractionallySizedBox(
+                widthFactor: 1,
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 500),
+                  padding: const EdgeInsets.symmetric(vertical: Sizes.size12),
+                  decoration: BoxDecoration(
+                    color: ref.watch(configProvider).darkMode
+                        ? Colors.black
+                        : Colors.white,
+                    borderRadius: BorderRadius.circular(Sizes.size5),
+                    border: Border.all(
+                      color: isDisabled
+                          ? Colors.grey.shade300
+                          : Colors.grey.shade800,
+                    ),
+                  ),
+                  child: AnimatedDefaultTextStyle(
+                    duration: const Duration(milliseconds: 500),
+                    style: TextStyle(
+                      color: isDisabled
+                          ? Colors.grey.shade300
+                          : Colors.grey.shade800,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    child: const Text(
+                      "인증문자 받기",
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ),
+              Gaps.v10,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    "휴대폰 번호가 변경되었나요?",
+                    style: TextStyle(
+                      fontSize: Sizes.size14,
+                    ),
+                  ),
+                  Gaps.h5,
+                  GestureDetector(
+                    onTap: () {},
+                    child: const Text(
+                      "이메일로 계정 찾기",
+                      style: TextStyle(
+                        fontSize: Sizes.size14,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  )
+                ],
               )
             ],
           ),
