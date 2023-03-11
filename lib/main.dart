@@ -36,6 +36,7 @@ class CarrotMarketApp extends ConsumerWidget {
     return MaterialApp.router(
       routerConfig: router,
       title: 'CarrotMarket',
+      debugShowCheckedModeBanner: false,
       themeMode:
           ref.watch(configProvider).darkMode ? ThemeMode.dark : ThemeMode.light,
       darkTheme: ThemeData(
@@ -79,7 +80,8 @@ class CarrotMarketApp extends ConsumerWidget {
               const TextSelectionThemeData(cursorColor: Color(0xFFF9893D)),
           primaryColor: const Color(0xFFF9893D),
           textTheme: GoogleFonts.hindGunturTextTheme(
-              ThemeData(brightness: Brightness.light).textTheme),
+            ThemeData(brightness: Brightness.light).textTheme,
+          ),
           tabBarTheme: TabBarTheme(
             labelColor: Colors.black,
             unselectedLabelColor: Colors.grey.shade500,

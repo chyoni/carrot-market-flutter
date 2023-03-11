@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:carrotmarket/constants/gaps.dart';
 import 'package:carrotmarket/constants/sizes.dart';
 import 'package:carrotmarket/features/authentication/login_screen.dart';
@@ -60,7 +62,7 @@ class SignupScreen extends ConsumerWidget {
       ),
       bottomNavigationBar: Container(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height / 7,
+        height: MediaQuery.of(context).size.height / 6,
         padding: const EdgeInsets.symmetric(
           vertical: Sizes.size14,
           horizontal: Sizes.size20,
@@ -92,12 +94,15 @@ class SignupScreen extends ConsumerWidget {
             Gaps.v20,
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: Platform.isAndroid
+                  ? CrossAxisAlignment.start
+                  : CrossAxisAlignment.center,
               children: [
                 Text(
                   "이미 계정이 있나요?",
                   style: TextStyle(
                     color: Colors.grey.shade700,
+                    fontSize: Sizes.size14,
                   ),
                 ),
                 Gaps.h10,
