@@ -7,8 +7,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class LoginScreen extends ConsumerStatefulWidget {
   static const String routeName = "login";
   static const String routeURL = "/login";
+  final String? place;
 
-  const LoginScreen({super.key});
+  const LoginScreen({super.key, this.place});
 
   @override
   LoginScreenState createState() => LoginScreenState();
@@ -52,8 +53,10 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                         : Colors.black,
                   ),
                   children: <TextSpan>[
-                    const TextSpan(
-                      text: "휴대폰 번호로 로그인해주세요.\r\n",
+                    TextSpan(
+                      text: widget.place == null
+                          ? "휴대폰 번호로 로그인해주세요.\r\n"
+                          : "휴대폰 번호로 가입해주세요.\r\n",
                     ),
                     TextSpan(
                       text: "휴대폰 번호는 안전하게 보관되며 이웃들에게 공개되지 않아요.",

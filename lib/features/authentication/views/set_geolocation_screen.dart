@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:carrotmarket/constants/gaps.dart';
 import 'package:carrotmarket/constants/sizes.dart';
 import 'package:carrotmarket/features/authentication/view_models/geolocation_view_model.dart';
+import 'package:carrotmarket/features/authentication/views/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:go_router/go_router.dart';
 
 class SetGeolocationScreen extends ConsumerStatefulWidget {
   static const String routeName = "setLocation";
@@ -20,6 +22,7 @@ class SetGeolocationScreen extends ConsumerStatefulWidget {
 class SetGeolocationScreenState extends ConsumerState<SetGeolocationScreen> {
   late final bool _serviceEnabled;
   late LocationPermission _permission;
+  final TextEditingController _controller = TextEditingController();
 
   Future<void> _getPermission() async {
     _serviceEnabled = await Geolocator.isLocationServiceEnabled();
@@ -40,6 +43,21 @@ class SetGeolocationScreenState extends ConsumerState<SetGeolocationScreen> {
     }
   }
 
+  Future<void> _tapFindCurrentPosition() async {
+    await ref.read(geoLocationProvider.notifier).refresh();
+  }
+
+  Future<void> _onChangedOrSubmittedSearchField(String value) async {
+    await ref.read(geoLocationProvider.notifier).getPlacesFromAddress(value);
+  }
+
+  _onTapListTile(String selectedPlace) {
+    context.pushNamed(
+      LoginScreen.routeName,
+      queryParams: {"place": selectedPlace},
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -52,6 +70,9 @@ class SetGeolocationScreenState extends ConsumerState<SetGeolocationScreen> {
       appBar: AppBar(
         leadingWidth: Sizes.size20,
         title: TextField(
+          controller: _controller,
+          onSubmitted: (value) => _onChangedOrSubmittedSearchField(value),
+          onChanged: (value) => _onChangedOrSubmittedSearchField(value),
           autocorrect: false,
           style: const TextStyle(
             fontSize: Sizes.size14,
@@ -101,20 +122,23 @@ class SetGeolocationScreenState extends ConsumerState<SetGeolocationScreen> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
-                    Icon(
+                  children: [
+                    const Icon(
                       Icons.gps_not_fixed,
                       size: Sizes.size14,
                       color: Colors.white,
                     ),
                     Gaps.h8,
-                    Text(
-                      "현재위치로 찾기",
-                      style: TextStyle(
-                        height: Sizes.size2,
-                        fontSize: Sizes.size14,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                    GestureDetector(
+                      onTap: _tapFindCurrentPosition,
+                      child: const Text(
+                        "현재위치로 찾기",
+                        style: TextStyle(
+                          height: Sizes.size2,
+                          fontSize: Sizes.size14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ],
@@ -134,7 +158,13 @@ class SetGeolocationScreenState extends ConsumerState<SetGeolocationScreen> {
                     ),
                     error: (error, stackTrace) => Center(
                       child: Text(
-                          "error occured when fetch position data, root cause: ${error.toString()}"),
+                        error.toString(),
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontSize: Sizes.size20,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
                     data: (places) {
                       return ListView.separated(
@@ -154,6 +184,8 @@ class SetGeolocationScreenState extends ConsumerState<SetGeolocationScreen> {
                           }
                           return ListTile(
                             dense: true,
+                            onTap: () => _onTapListTile(
+                                "${place.administrativeArea} ${place.locality} ${place.subLocality} ${place.thoroughfare}"),
                             contentPadding: EdgeInsets.zero,
                             title: Text(
                               "${place.administrativeArea} ${place.locality} ${place.subLocality} ${place.thoroughfare}",

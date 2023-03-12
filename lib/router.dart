@@ -13,7 +13,12 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: LoginScreen.routeName,
       path: LoginScreen.routeURL,
-      builder: (context, state) => const LoginScreen(),
+      builder: (context, state) {
+        final place = state.queryParams["place"];
+        return LoginScreen(
+          place: place,
+        );
+      },
     ),
     GoRoute(
       name: SetGeolocationScreen.routeName,
