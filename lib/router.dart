@@ -1,6 +1,6 @@
-import 'package:carrotmarket/features/authentication/login_screen.dart';
-import 'package:carrotmarket/features/authentication/set_geolocation_screen.dart';
-import 'package:carrotmarket/features/authentication/signup_screen.dart';
+import 'package:carrotmarket/features/authentication/views/login_screen.dart';
+import 'package:carrotmarket/features/authentication/views/set_geolocation_screen.dart';
+import 'package:carrotmarket/features/authentication/views/signup_screen.dart';
 import 'package:go_router/go_router.dart';
 
 final GoRouter router = GoRouter(

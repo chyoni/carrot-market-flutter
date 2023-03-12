@@ -8,7 +8,7 @@ class ConfigRepository {
   ConfigRepository(this._preferences);
 
   Future<void> setDarkMode(bool value) async {
-    _preferences.setBool(_darkMode, value);
+    await _preferences.setBool(_darkMode, value);
   }
 
   bool getDarkMode() {
